@@ -1,0 +1,82 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code.
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*.
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+```{r}
+library(tidyverse)
+```
+
+## Data set
+
+Upload PM2.5 data
+
+```{r}
+pm_data <- read_csv("")
+```
+
+## Variable Length Sliding Window
+
+Input:\
+T original time series\
+m minimum length of left input\
+n minimum length of right input\
+o maximum length of left input\
+p maximum length of right input\
+q length of output sequence
+
+Output:\
+S \<- (s_in,s_out) set of all samples\
+
+```{r}
+VLSW_single <- function(T, m, n, o, p, q){
+  
+  # initialization
+  S <- list()
+  IL <- NULL
+  O <- NULL
+  IR <- NULL
+  M <- NULL
+  s_in <- NULL
+  s_out <- NULL
+  
+  # sliding window
+  for (i in m:n) {
+    for (j in o:p) {
+      counter <- length(T)-i-q-j+1
+      for (k in 1:counter) {
+        IL <- T[k, k+i-1]
+        O <- T[k+i, k+i+q-1]
+        IR <- T[k+i+q, k+i+q+n-1]
+        M <- NULL #fill
+        s_in <- c(IL,M,IR)
+        s_out <- O
+        S <- S.append(c(s_in,s_out))
+      }
+    }
+  }
+  return(S)
+}
+```
+
+For multiple weather stations
+
+```{r}
+VLSW <- function(A, m, n, o, p, q) {
+  
+}
+```
